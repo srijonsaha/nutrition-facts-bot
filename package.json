@@ -1,0 +1,17 @@
+{
+  "name": "nutrition-facts-bot",
+  "version": "1.0.0",
+  "description": "Take pictures of your food and get nutritional facts",
+  "scripts": {
+
+  },
+  "author": "Srijon Saha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "typescript": "^3.7.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2"
+  }
+}
