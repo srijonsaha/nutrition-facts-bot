@@ -1,7 +1,7 @@
 import express from "express";
 import Controller from "./controller";
 
-export default class WebhookController implements Controller{
+export default class WebhookController implements Controller {
   public router: express.Router;
   private endpoint: string;
 
@@ -11,16 +11,16 @@ export default class WebhookController implements Controller{
     this.initRoutes();
   }
 
-  private initRoutes() {
+  private initRoutes(): void {
     this.router.post(this.endpoint, this.handlePOST.bind(this));
     this.router.get(this.endpoint, this.handleGET.bind(this));
   }
 
-  private handlePOST() {
+  private handlePOST(): void {
     console.log(`POST ${this.endpoint}`);
   }
 
-  private handleGET() {
+  private handleGET(): void {
     console.log(`GET ${this.endpoint}`);
   }
 }
