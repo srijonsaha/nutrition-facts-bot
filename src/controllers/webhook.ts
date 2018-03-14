@@ -1,13 +1,15 @@
-import express from "express";
+import { Router, Request, Response } from "express";
 import Controller from "./controller";
 
 export default class WebhookController implements Controller {
-  public router: express.Router;
+  public router: Router;
   private endpoint: string;
+  private readonly verifyToken: string;
 
   constructor() {
     this.endpoint = "/webhook";
-    this.router = express.Router();
+    this.verifyToken = process.env.VERIFY_TOKEN;
+    this.router = Router();
     this.initRoutes();
   }
 
@@ -16,11 +18,30 @@ export default class WebhookController implements Controller {
     this.router.get(this.endpoint, this.handleGET.bind(this));
   }
 
-  private handlePOST(): void {
-    console.log(`POST ${this.endpoint}`);
+  private handlePOST(req: Request, res: Response): void {
+    if (req.body.object === "page") {
+      for (const entry of req.body.entry) {
+        const webhookEvent = entry.messaging[0];
+        console.log(webhookEvent);
+      }
+
+      res.status(200).send("EVENT RECEIVED");
+    } else {
+      res.sendStatus(404);
+    }
   }
 
-  private handleGET(): void {
-    console.log(`GET ${this.endpoint}`);
+  private handleGET(req: Request, res: Response): void {
+    const mode = req.query["hub.mode"];
+    const token = req.query["hub.verify_token"];
+    const challenge = req.query["hub.challenge"];
+
+    if (mode && token) {
+      if (mode === "subscribe" && token === this.verifyToken) {
+        res.status(200).send(challenge);
+      } else {
+        res.sendStatus(403);
+      }
+    }
   }
 }
