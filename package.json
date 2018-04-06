@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Take pictures of your food and get nutritional facts",
   "scripts": {
+    "start": "node dist/index.js",
     "build": "tsc -p .",
     "lint": "eslint --ext ts ."
   },

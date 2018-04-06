@@ -12,6 +12,7 @@ export default class WebhookController implements Controller {
     this.endpoint = "/webhook";
     this.verifyToken = process.env.VERIFY_TOKEN;
     this.router = Router();
+    this.chatbot = new Chatbot();
     this.initRoutes();
   }
 
