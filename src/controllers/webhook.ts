@@ -1,9 +1,11 @@
 import { Router, Request, Response } from "express";
 import Controller from "./controller";
+import Chatbot from "../services/chatbot";
 
 export default class WebhookController implements Controller {
   public router: Router;
   private endpoint: string;
+  private chatbot: Chatbot;
   private readonly verifyToken: string;
 
   constructor() {
@@ -22,7 +24,9 @@ export default class WebhookController implements Controller {
     if (req.body.object === "page") {
       for (const entry of req.body.entry) {
         const webhookEvent = entry.messaging[0];
-        console.log(webhookEvent);
+        if (webhookEvent.message) {
+          this.chatbot.respondToMsg(webhookEvent.sender.id, webhookEvent.message);
+        }
       }
 
       res.status(200).send("EVENT RECEIVED");
